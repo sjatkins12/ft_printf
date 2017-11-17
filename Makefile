@@ -6,11 +6,11 @@
 #    By: satkins <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/07/25 14:05:53 by satkins           #+#    #+#              #
-#    Updated: 2017/11/16 23:43:55 by satkins          ###   ########.fr        #
+#    Updated: 2017/11/17 00:13:18 by satkins          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = printflibft.a
+NAME =libftprintf.a
 
 LIBFT = libft/ft_atoi.c \
 		  libft/ft_bzero.c \
