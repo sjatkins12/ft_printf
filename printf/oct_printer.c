@@ -48,7 +48,7 @@ size_t		oct_print(unsigned long long int num, t_flag arg_flag)
 	int		zeros;
 	int		spaces;
 
-	if (num == 0 && arg_flag.precision_set)
+	if (num == 0 && (arg_flag.precision_set || arg_flag.prefix))
 		str = "\0";
 	else
 		str = ft_ullitoa_base(num, 8);
