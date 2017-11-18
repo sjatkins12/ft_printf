@@ -6,11 +6,11 @@
 #    By: satkins <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/07/25 14:05:53 by satkins           #+#    #+#              #
-#    Updated: 2017/11/17 00:13:18 by satkins          ###   ########.fr        #
+#    Updated: 2017/11/17 17:29:36 by satkins          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME =libftprintf.a
+NAME = libftprintf.a
 
 LIBFT = libft/ft_atoi.c \
 		  libft/ft_bzero.c \
@@ -105,7 +105,7 @@ all: $(NAME)
 
 $(NAME): $(LIBFT)
 	@$(CC) $(CFLAGS) -I$(HEADER) $^ && mv *.o libft/
-	@$(CC) $(CFLAGS) -I$(HEADER) $(PRINTF) && mv *.o 'printf'
+	@$(CC) $(CFLAGS) -I$(HEADER) $(PRINTF) && mv *.o 'printf/'
 	@ar rc $(NAME) $(TARG)
 
 

@@ -33,39 +33,59 @@ static void	print_prefix(int caps)
 		ft_putstr("0x");
 }
 
-size_t	hex_print(unsigned long long int num, t_flag arg_flag, char caps)
+static void	left_print(t_flag arg_flag, int spaces, int zeros, char *str)
+{
+	if (arg_flag.prefix)
+		print_prefix(arg_flag.caps);
+	while (zeros-- > 0)
+		ft_putchar('0');
+	ft_putstr(str);
+	while (spaces-- > 0)
+		ft_putchar(' ');
+}
+
+static void	right_print(t_flag arg_flag, int spaces, int zeros, char *str)
+{
+	if (arg_flag.pad_zero && !arg_flag.precision_set)
+	{
+		if (arg_flag.prefix)
+			print_prefix(arg_flag.caps);
+		while (spaces-- > 0)
+			ft_putchar('0');
+		ft_putstr(str);
+	}
+	else
+	{
+		while (spaces-- > 0)
+			ft_putchar(' ');
+		if (arg_flag.prefix)
+			print_prefix(arg_flag.caps);
+		while (zeros-- > 0)
+			ft_putchar('0');
+		ft_putstr(str);
+	}
+}
+
+size_t		hex_print(unsigned long long int num, t_flag arg_flag, char caps)
 {
 	size_t	len;
 	char	*str;
 	int		zeros;
 	int		spaces;
 
-	str = ft_ullitoa_base(num, 16);
-	if (caps)
+	if (num == 0 && arg_flag.precision_set)
+		str = "\0";
+	else
+		str = ft_ullitoa_base(num, 16);
+	if (num == 0)
+		arg_flag.prefix = 0;
+	if ((arg_flag.caps = caps))
 		ft_toupper_str(str);
 	len = ft_strlen(str);
 	get_zeros(&zeros, &spaces, &len, arg_flag);
 	if (arg_flag.left_allign)
-	{
-		if (arg_flag.prefix)
-			print_prefix(caps);
-		while (zeros-- > 0)
-			ft_putchar('0');
-		ft_putstr(str);
-		while (spaces-- > 0)
-			ft_putchar(' ');
-	}
+		left_print(arg_flag, spaces, zeros, str);
 	else
-	{
-		while (zeros && spaces-- > 0)
-			ft_putchar('0');
-		while (spaces-- > 0)
-			ft_putchar(' ');
-		if (arg_flag.prefix)
-			print_prefix(caps);
-		while (zeros-- > 0)
-			ft_putchar('0');
-		ft_putstr(str);
-	}
+		right_print(arg_flag, spaces, zeros, str);
 	return (len);
 }

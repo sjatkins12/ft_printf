@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   int_printer.c                                     :+:      :+:    :+:   */
+/*   int_printer.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: satkins <satkins@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -25,7 +25,39 @@ static void	get_zeros(int *zeros, int *spaces, size_t *len, t_flag arg_flag)
 	*len += *spaces + *zeros;
 }
 
-size_t	int_print(long long int num, t_flag arg_flag)
+static void	right_print(t_flag arg_flag, int spaces, int zeros, char *str)
+{
+	if (arg_flag.pad_zero && !arg_flag.precision_set)
+	{
+		if (arg_flag.sign)
+			ft_putchar((char)arg_flag.sign);
+		while (spaces-- > 0)
+			ft_putchar('0');
+	}
+	else
+	{
+		while (spaces-- > 0)
+			ft_putchar(' ');
+		if (arg_flag.sign)
+			ft_putchar((char)arg_flag.sign);
+	}
+	while (zeros-- > 0)
+		ft_putchar('0');
+	ft_putstr(str);
+}
+
+static void	left_print(t_flag arg_flag, int spaces, int zeros, char *str)
+{
+	if (arg_flag.sign)
+		ft_putchar((char)arg_flag.sign);
+	while (zeros-- > 0)
+		ft_putchar('0');
+	ft_putstr(str);
+	while (spaces-- > 0)
+		ft_putchar(' ');
+}
+
+size_t		int_print(long long int num, t_flag arg_flag)
 {
 	size_t	len;
 	char	*str;
@@ -38,39 +70,15 @@ size_t	int_print(long long int num, t_flag arg_flag)
 		arg_flag.sign = '+';
 	else if (arg_flag.blank)
 		arg_flag.sign = ' ';
-	str = ft_ullitoa_base(num, 10);
+	if (num == 0 && arg_flag.precision_set)
+		str = "\0";
+	else
+		str = ft_ullitoa_base(num, 10);
 	len = ft_strlen(str);
 	get_zeros(&zeros, &spaces, &len, arg_flag);
 	if (arg_flag.left_allign)
-	{
-		if (arg_flag.sign)
-			ft_putchar((char)arg_flag.sign);
-		while (zeros-- > 0)
-			ft_putchar('0');
-		ft_putstr(str);
-		while (spaces-- > 0)
-			ft_putchar(' ');
-	}
+		left_print(arg_flag, spaces, zeros, str);
 	else
-	{
-		if (arg_flag.pad_zero)
-		{
-			if (arg_flag.sign)
-				ft_putchar((char)arg_flag.sign);
-			while (spaces-- > 0)
-				ft_putchar('0');
-		}
-		else 
-		{
-			while (spaces-- > 0)
-				ft_putchar(' ');
-			if (arg_flag.sign)
-				ft_putchar((char)arg_flag.sign);
-		}
-		while (zeros-- > 0)
-			ft_putchar('0');
-		ft_putstr(str);
-	}
+		right_print(arg_flag, spaces, zeros, str);
 	return (len);
 }
-

@@ -14,7 +14,7 @@
 
 static void	ft_print_index(int nb, int *nbr, size_t *len)
 {
-	int	index;
+	int		index;
 
 	index = 0;
 	if (nb > 0)
@@ -40,7 +40,7 @@ static void	ft_print_index(int nb, int *nbr, size_t *len)
 		ft_putchar(nbr[index] + '0');
 }
 
-size_t	ft_putnbr(int n)
+size_t		ft_putnbr(int n)
 {
 	size_t	len;
 	int		nbr[10];

@@ -12,9 +12,9 @@
 
 #include "ft_arg_handler.h"
 
-size_t	print_pres(char *str, t_flag arg_flag)
+size_t						print_pres(char *str, t_flag arg_flag)
 {
-	size_t	len;
+	size_t					len;
 
 	len = ft_strlen(str);
 	if (arg_flag.precision_set && arg_flag.precision < (int)len)
@@ -23,10 +23,10 @@ size_t	print_pres(char *str, t_flag arg_flag)
 	return (len);
 }
 
-size_t	print_width(char *str, t_flag arg_flag)
+size_t						print_width(char *str, t_flag arg_flag)
 {
-	size_t	len;
-	int		print_len;
+	size_t					len;
+	int						print_len;
 
 	len = ft_strlen(str);
 	print_len = 0;
@@ -46,12 +46,14 @@ size_t	print_width(char *str, t_flag arg_flag)
 	return (len);
 }
 
-size_t	str_print(va_list *ap, t_flag arg_flag)
+size_t						str_print(va_list *ap, t_flag arg_flag)
 {
-	char	*str;
-	size_t	len;
-		
+	char					*str;
+	size_t					len;
+
 	str = va_arg(*ap, char*);
+	if (str == NULL)
+		str = "(null)";
 	if (arg_flag.left_allign)
 	{
 		len = print_pres(str, arg_flag);
@@ -64,18 +66,19 @@ size_t	str_print(va_list *ap, t_flag arg_flag)
 	}
 	return (len);
 }
-static void	print_prefix_str(char *str)
+
+static void					print_prefix_str(char *str)
 {
 	ft_putstr("0x");
 	ft_putstr(str);
 }
 
-size_t	ptr_print(va_list *ap, t_flag arg_flag)
+size_t						ptr_print(va_list *ap, t_flag arg_flag)
 {
 	unsigned long long int	ptr;
-	char	*str;
-	size_t	len;
-	int		i;
+	char					*str;
+	size_t					len;
+	int						i;
 
 	ptr = (unsigned long long int)va_arg(*ap, void *);
 	str = ft_ullitoa_base(ptr, 16);
@@ -87,7 +90,7 @@ size_t	ptr_print(va_list *ap, t_flag arg_flag)
 			print_prefix_str(str);
 			while (++i < arg_flag.width - (int)len)
 				ft_putchar(' ');
-			return (arg_flag.width);	
+			return (arg_flag.width);
 		}
 		while (++i < arg_flag.width - (int)len)
 			ft_putchar(' ');

@@ -33,9 +33,9 @@ unsigned long long int		unsigned_len(va_list *ap, t_flag arg_flag)
 	return (num);
 }
 
-long long int			signed_len(va_list *ap, t_flag arg_flag)
+long long int				signed_len(va_list *ap, t_flag arg_flag)
 {
-	long long int		num;
+	long long int			num;
 
 	if (arg_flag.e_length == hh)
 		num = (signed char)va_arg(*ap, long long int);
@@ -47,17 +47,18 @@ long long int			signed_len(va_list *ap, t_flag arg_flag)
 		num = va_arg(*ap, long long int);
 	else if (arg_flag.e_length == j)
 		num = (intmax_t)va_arg(*ap, long long int);
-	else if (arg_flag.e_length == ll)
-		num = (size_t)va_arg(*ap, long long int);
+	else if (arg_flag.e_length == z)
+		num = (ssize_t)va_arg(*ap, long long int);
 	else
 		num = (int)va_arg(*ap, long long int);
 	return (num);
 }
 
-size_t					signed_print(va_list *ap, t_flag arg_flag, char type)
+size_t						signed_print(va_list *ap,
+	t_flag arg_flag, char type)
 {
-	long long			num;
-	size_t				len;
+	long long				num;
+	size_t					len;
 
 	len = 0;
 	if (type == 'D')
@@ -70,10 +71,11 @@ size_t					signed_print(va_list *ap, t_flag arg_flag, char type)
 	return (len);
 }
 
-size_t					unsigned_print(va_list *ap, t_flag arg_flag, char type)
+size_t						unsigned_print(va_list *ap,
+	t_flag arg_flag, char type)
 {
-	unsigned long long	num;
-	size_t				len;
+	unsigned long long		num;
+	size_t					len;
 
 	len = 0;
 	if (type == 'O' || type == 'U')
@@ -87,6 +89,5 @@ size_t					unsigned_print(va_list *ap, t_flag arg_flag, char type)
 		len = oct_print(num, arg_flag);
 	else if (type == 'U' || type == 'u')
 		len = uint_print(num, arg_flag);
-
 	return (len);
 }

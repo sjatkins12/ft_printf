@@ -15,7 +15,7 @@
 char				*ft_ullitoa_base(unsigned long long int num, int base)
 {
 	static char		buf[32] = "0";
-	int 			i;
+	int				i;
 	int				digit;
 
 	i = 30;

@@ -14,8 +14,8 @@
 
 static char	*parse_flags(char **arg, t_flag *arg_flags)
 {
-	if (**arg == '#' || **arg == '0' || **arg == '+' || **arg == '-' || 
-		**arg == ' ')
+	if (**arg != '\0' && (**arg == '#' || **arg == '0' || **arg == '+' ||
+		**arg == '-' || **arg == ' '))
 	{
 		if (**arg == '#')
 			arg_flags->prefix = 1;
@@ -38,7 +38,7 @@ static char	*parse_flags(char **arg, t_flag *arg_flags)
 
 static void	parse_precision(char **arg, t_flag *arg_flags)
 {
-	if (**arg == '.')
+	if (**arg != '\0' && **arg == '.')
 	{
 		++(*arg);
 		if (ft_isdigit(**arg))
@@ -60,33 +60,39 @@ static void	parse_precision(char **arg, t_flag *arg_flags)
 
 static void	parse_length(char **arg, t_flag *arg_flags)
 {
-	if (**arg == 'h' && (++(*arg)))
+	if (**arg != '\0')
 	{
 		if (**arg == 'h' && (++(*arg)))
-			arg_flags->e_length = hh;
-		else
-			arg_flags->e_length = h;
+		{
+			if (**arg == 'h' && (++(*arg)))
+				arg_flags->e_length = hh;
+			else
+				arg_flags->e_length = h;
+		}
+		else if (**arg == 'l' && (++(*arg)))
+		{
+			if (**arg == 'l' && (++(*arg)))
+				arg_flags->e_length = ll;
+			else
+				arg_flags->e_length = l;
+		}
+		else if (**arg == 'z' && (++(*arg)))
+			arg_flags->e_length = z;
+		else if (**arg == 'j' && (++(*arg)))
+			arg_flags->e_length = j;
 	}
-	else if (**arg == 'l' && (++(*arg)))
-	{
-		if (**arg == 'l' && (++(*arg)))
-			arg_flags->e_length = ll;
-		else
-			arg_flags->e_length = l;
-	}
-	else if (**arg == 'z' && (++(*arg)))
-		arg_flags->e_length = z;
-	else if (**arg == 'j' && (++(*arg)))
-		arg_flags->e_length = j;
 }
 
 static void	parse_width(char **arg, t_flag *arg_flags)
 {
-	arg_flags->width = ft_atoi(*arg);
-	while (ft_isdigit(**arg))
+	if (**arg != '\0')
 	{
-		++(*arg);
-		arg_flags->width_set = 1;
+		arg_flags->width = ft_atoi(*arg);
+		while (ft_isdigit(**arg))
+		{
+			++(*arg);
+			arg_flags->width_set = 1;
+		}
 	}
 }
 

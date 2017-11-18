@@ -27,14 +27,31 @@ static void	get_zeros(int *zeros, int *spaces, size_t *len, t_flag arg_flag)
 	*len += *spaces + *zeros;
 }
 
-size_t	oct_print(unsigned long long int num, t_flag arg_flag)
+static void	right_print(t_flag arg_flag, int spaces, int zeros, char *str)
+{
+	if (arg_flag.pad_zero && !arg_flag.precision_set)
+	{
+		zeros += spaces;
+		spaces = 0;
+	}
+	while (spaces-- > 0)
+		ft_putchar(' ');
+	while (zeros-- > 0)
+		ft_putchar('0');
+	ft_putstr(str);
+}
+
+size_t		oct_print(unsigned long long int num, t_flag arg_flag)
 {
 	size_t	len;
 	char	*str;
 	int		zeros;
 	int		spaces;
 
-	str = ft_ullitoa_base(num, 8);
+	if (num == 0 && arg_flag.precision_set)
+		str = "\0";
+	else
+		str = ft_ullitoa_base(num, 8);
 	len = ft_strlen(str);
 	get_zeros(&zeros, &spaces, &len, arg_flag);
 	if (arg_flag.left_allign)
@@ -46,13 +63,6 @@ size_t	oct_print(unsigned long long int num, t_flag arg_flag)
 			ft_putchar(' ');
 	}
 	else
-	{
-		while (spaces-- > 0)
-			ft_putchar(' ');
-		while (zeros-- > 0)
-			ft_putchar('0');
-		ft_putstr(str);
-	}
+		right_print(arg_flag, spaces, zeros, str);
 	return (len);
 }
-
