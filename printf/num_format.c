@@ -48,7 +48,7 @@ long long int				signed_len(va_list *ap, t_flag arg_flag)
 	else if (arg_flag.e_length == j)
 		num = (intmax_t)va_arg(*ap, long long int);
 	else if (arg_flag.e_length == z)
-		num = va_arg(*ap, long long int);
+		num = (unsigned long long)va_arg(*ap, long long int);
 	else
 		num = (int)va_arg(*ap, long long int);
 	return (num);
