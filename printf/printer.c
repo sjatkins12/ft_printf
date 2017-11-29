@@ -40,7 +40,10 @@ size_t						print_width(char *str, t_flag arg_flag)
 	len = 0;
 	while (--print_len >= 0)
 	{
-		ft_putchar(' ');
+		if (arg_flag.pad_zero)
+			ft_putchar('0');
+		else
+			ft_putchar(' ');
 		len++;
 	}
 	return (len);
@@ -70,7 +73,8 @@ size_t						str_print(va_list *ap, t_flag arg_flag)
 static void					print_prefix_str(char *str)
 {
 	ft_putstr("0x");
-	ft_putstr(str);
+	if (!(*str == '0' && str[1] == '\0'))
+		ft_putstr(str);
 }
 
 size_t						ptr_print(va_list *ap, t_flag arg_flag)

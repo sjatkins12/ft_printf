@@ -54,8 +54,6 @@ static void	parse_precision(char **arg, t_flag *arg_flags)
 			arg_flags->precision_set = 1;
 		}
 	}
-	else
-		arg_flags->precision_set = 0;
 }
 
 static void	parse_length(char **arg, t_flag *arg_flags)
@@ -64,28 +62,28 @@ static void	parse_length(char **arg, t_flag *arg_flags)
 	{
 		if (**arg == 'h' && (++(*arg)))
 		{
-			if (**arg == 'h' && (++(*arg)))
+			if (**arg == 'h' && (++(*arg)) && arg_flags->e_length < hh)
 				arg_flags->e_length = hh;
-			else
+			else if (arg_flags->e_length < h)
 				arg_flags->e_length = h;
 		}
 		else if (**arg == 'l' && (++(*arg)))
 		{
-			if (**arg == 'l' && (++(*arg)))
+			if (**arg == 'l' && (++(*arg)) && arg_flags->e_length < ll)
 				arg_flags->e_length = ll;
-			else
+			else if (arg_flags->e_length < l)
 				arg_flags->e_length = l;
 		}
-		else if (**arg == 'z' && (++(*arg)))
+		else if (**arg == 'z' && (++(*arg)) && arg_flags->e_length < z)
 			arg_flags->e_length = z;
-		else if (**arg == 'j' && (++(*arg)))
+		else if (**arg == 'j' && (++(*arg)) && arg_flags->e_length < j)
 			arg_flags->e_length = j;
 	}
 }
 
 static void	parse_width(char **arg, t_flag *arg_flags)
 {
-	if (**arg != '\0')
+	if (**arg != '\0' && ft_isdigit(**arg))
 	{
 		arg_flags->width = ft_atoi(*arg);
 		while (ft_isdigit(**arg))
@@ -98,8 +96,15 @@ static void	parse_width(char **arg, t_flag *arg_flags)
 
 void		flag_check(t_flag *arg_flags, char **arg)
 {
-	parse_flags(arg, arg_flags);
-	parse_width(arg, arg_flags);
-	parse_precision(arg, arg_flags);
-	parse_length(arg, arg_flags);
+	while (**arg != '\0' && (**arg == 'h' || **arg == 'l' 
+		|| **arg == 'j' || **arg == 'z' 
+		|| **arg == '.' || **arg == ' ' || **arg == '#' 
+		|| **arg == '+' || **arg == '-' || **arg == '0' || ft_isdigit(**arg)))
+	{
+		parse_flags(arg, arg_flags);
+		parse_width(arg, arg_flags);
+		parse_precision(arg, arg_flags);
+		parse_length(arg, arg_flags);
+	}
+
 }

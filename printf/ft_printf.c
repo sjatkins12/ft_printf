@@ -59,8 +59,29 @@ size_t				char_print(long long num, t_flag arg_flags)
 	{
 		if (arg_flags.width_set)
 			while (--arg_flags.width > 0 && (len++))
-				ft_putchar(' ');
+			{
+				if (arg_flags.pad_zero)
+					ft_putchar('0');
+				else
+					ft_putchar(' ');
+			}
 		ft_putchar(chr);
+	}
+	return (len);
+}
+
+static size_t		print_width(t_flag arg_flags, size_t len)
+{
+	if (len < (size_t)arg_flags.width)
+	{
+		while (arg_flags.width-- > 0)
+		{
+			if (!arg_flags.left_allign && arg_flags.pad_zero)
+				ft_putchar('0');
+			else
+				ft_putchar(' ');
+		}
+		len = (size_t)arg_flags.width;
 	}
 	return (len);
 }
@@ -72,7 +93,7 @@ static size_t		handle_arg(char **format, char *arg, va_list *ap)
 
 	ft_bzero(&arg_flags, sizeof(t_flag));
 	len = 0;
-	if (*arg != '\0')
+	if (*arg != '\0' || !(*format = arg))
 	{
 		flag_check(&arg_flags, &arg);
 		if ((*arg == 'i' || *arg == 'd' || *arg == 'c'
@@ -87,11 +108,10 @@ static size_t		handle_arg(char **format, char *arg, va_list *ap)
 			len = ptr_print(ap, arg_flags);
 		else if (*arg == '%' && (*format = arg + 1))
 			len = print_perc(arg_flags);
-		else
-			*format = arg;
+		else if ((*arg || !(*format = arg)) && (*format = arg + 1))
+			len = char_print(*arg, arg_flags);
 	}
-	else
-		*format = arg;
+	len = print_width(arg_flags, len);
 	return (len);
 }
 
