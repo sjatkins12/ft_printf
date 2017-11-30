@@ -20,8 +20,6 @@ static void	get_zeros(int *zeros, int *spaces, size_t *len, t_flag arg_flag)
 		*zeros = 1;
 	if (arg_flag.precision_set && arg_flag.precision > (int)*len)
 		*zeros = arg_flag.precision - (int)*len;
-	if (arg_flag.sign)
-		(*len)++;
 	if (arg_flag.width_set && arg_flag.width > (int)*len + *zeros)
 		*spaces = arg_flag.width - ((int)*len + *zeros);
 	*len += *spaces + *zeros;

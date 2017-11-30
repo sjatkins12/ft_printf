@@ -94,11 +94,11 @@ static void	parse_width(char **arg, t_flag *arg_flags)
 	}
 }
 
-void		flag_check(t_flag *arg_flags, char **arg)
+int			flag_check(t_flag *arg_flags, char **arg)
 {
-	while (**arg != '\0' && (**arg == 'h' || **arg == 'l' 
-		|| **arg == 'j' || **arg == 'z' 
-		|| **arg == '.' || **arg == ' ' || **arg == '#' 
+	while (**arg != '\0' && (**arg == 'h' || **arg == 'l'
+		|| **arg == 'j' || **arg == 'z'
+		|| **arg == '.' || **arg == ' ' || **arg == '#'
 		|| **arg == '+' || **arg == '-' || **arg == '0' || ft_isdigit(**arg)))
 	{
 		parse_flags(arg, arg_flags);
@@ -106,5 +106,5 @@ void		flag_check(t_flag *arg_flags, char **arg)
 		parse_precision(arg, arg_flags);
 		parse_length(arg, arg_flags);
 	}
-
+	return (1);
 }

@@ -18,6 +18,8 @@
 
 # include <stdarg.h>
 
+# include <stddef.h>
+
 # include <stdio.h>
 
 # include <unistd.h>
@@ -49,11 +51,15 @@ typedef struct		s_flag
 	}				e_length;
 }					t_flag;
 
-void			ft_putnstr(char *str, int len);
+void				ft_putnstr(char *str, int len);
+
+size_t				wstr_print(va_list *ap, t_flag arg_flag);
+
+size_t				uchar_print(long long num, t_flag arg_flags);
 
 size_t				ft_printf(char *format, ...);
 
-void				flag_check(t_flag *arg_flags, char **arg);
+int					flag_check(t_flag *arg_flags, char **arg);
 
 size_t				signed_print(va_list *ap, t_flag arg_flag, char type);
 

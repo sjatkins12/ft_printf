@@ -6,7 +6,7 @@
 #    By: satkins <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/07/25 14:05:53 by satkins           #+#    #+#              #
-#    Updated: 2017/11/09 19:13:43 by satkins          ###   ########.fr        #
+#    Updated: 2017/11/30 12:58:59 by satkins          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,7 +78,8 @@ PRINTF = printf/ft_printf.c \
 		 printf/hex_print.c \
 		 printf/int_printer.c \
 		 printf/uint_printer.c \
-		 printf/oct_printer.c
+		 printf/oct_printer.c \
+		 printf/ptr_printer.c
 
 SRCS = $(LIBFT) $(PRINTF)
 
