@@ -79,7 +79,10 @@ PRINTF = printf/ft_printf.c \
 		 printf/int_printer.c \
 		 printf/uint_printer.c \
 		 printf/oct_printer.c \
-		 printf/ptr_printer.c
+		 printf/ptr_printer.c \
+		 printf/wstr_print.c \
+		 printf/wchar_print.c \
+		 printf/char_print.c
 
 SRCS = $(LIBFT) $(PRINTF)
 
@@ -114,7 +117,7 @@ clean:
 	@/bin/rm -f $(TARG)
 
 fclean: clean
-	@/bin/rm -f $(NAME) $(EXE)
+	@/bin/rm -f $(NAME)
 
 re: fclean all
 

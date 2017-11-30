@@ -53,6 +53,8 @@ typedef struct		s_flag
 
 void				ft_putnstr(char *str, int len);
 
+size_t				str_format(char *str, t_flag arg_flag);
+
 size_t				wstr_print(va_list *ap, t_flag arg_flag);
 
 size_t				uchar_print(long long num, t_flag arg_flags);

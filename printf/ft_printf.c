@@ -41,116 +41,7 @@ static size_t		print_perc(t_flag arg_flags)
 	return (len + 1);
 }
 
-static void		uchar_print_helper(size_t len, t_flag arg_flags)
-{
-	if (!arg_flags.left_allign && arg_flags.pad_zero)
-	{
-		if (arg_flags.width_set && arg_flags.width > (int)len)
-			while (arg_flags.width-- > (int)len)
-				ft_putchar('0');
-	}
-	else if (arg_flags.width_set && arg_flags.width > (int)len)
-		while (arg_flags.width-- > (int)len)
-			ft_putchar(' ');
-}
-
-size_t				uchar_print(long long num, t_flag arg_flags)
-{
-	unsigned int	chr;
-	size_t			len;
-
-	chr = (wchar_t)num;
-	if (chr <= 0x7F)
-		return (char_print(chr, arg_flags));
-	if (chr <= 0x7FF)
-	{
-		len = 2;
-		if (arg_flags.left_allign)
-		{
-			ft_putchar((chr >> 6) + 0xC0);
-			ft_putchar((chr & 0x3F) + 0x80);
-			uchar_print_helper(len, arg_flags);
-		}
-		else
-		{
-			uchar_print_helper(len, arg_flags);
-			ft_putchar((chr >> 6) + 0xC0);
-			ft_putchar((chr & 0x3F) + 0x80);
-		}
-	}
-	else if (chr <= 0xFFFF)
-	{
-		len = 3;
-		if (arg_flags.left_allign)
-		{
-			ft_putchar((chr >> 12) + 0xE0);
-			ft_putchar(((chr >> 6) & 0x3F) + 0x80);
-			ft_putchar((chr & 0x3F) + 0x80);
-			uchar_print_helper(len, arg_flags);
-		}
-		else
-		{
-			uchar_print_helper(len, arg_flags);
-			ft_putchar((chr >> 12) + 0xE0);
-			ft_putchar(((chr >> 6) & 0x3F) + 0x80);
-			ft_putchar((chr & 0x3F) + 0x80);
-		}
-	}
-	else if (chr <= 0x10FFFF)
-	{
-		len = 4;
-		if (arg_flags.left_allign)
-		{
-			ft_putchar((chr >> 18) + 0xF0);
-			ft_putchar(((chr >> 12) & 0x3F) + 0x80);
-			ft_putchar(((chr >> 6) & 0x3F) + 0x80);
-			ft_putchar((chr & 0x3F) + 0x80);
-			uchar_print_helper(len, arg_flags);
-		}
-		else
-		{
-			uchar_print_helper(len, arg_flags);
-			ft_putchar((chr >> 18) + 0xF0);
-			ft_putchar(((chr >> 12) & 0x3F) + 0x80);
-			ft_putchar(((chr >> 6) & 0x3F) + 0x80);
-			ft_putchar((chr & 0x3F) + 0x80);	
-		}
-	}
-	else
-		len = 0;
-	return (len);
-}
-
-size_t				char_print(long long num, t_flag arg_flags)
-{
-	unsigned char	chr;
-	size_t			len;
-
-	chr = (unsigned char)num;
-	len = 1;
-	if (arg_flags.left_allign)
-	{
-		ft_putchar(chr);
-		if (arg_flags.width_set)
-			while (--arg_flags.width > 0 && (len++))
-				ft_putchar(' ');
-	}
-	else
-	{
-		if (arg_flags.width_set)
-			while (--arg_flags.width > 0 && (len++))
-			{
-				if (arg_flags.pad_zero)
-					ft_putchar('0');
-				else
-					ft_putchar(' ');
-			}
-		ft_putchar(chr);
-	}
-	return (len);
-}
-
-static size_t		print_width(t_flag arg_flags, size_t len)
+static size_t		print_wid(t_flag arg_flags, size_t len)
 {
 	if (len < (size_t)arg_flags.width)
 	{
@@ -177,22 +68,22 @@ static size_t		handle_arg(char **format, char *arg, va_list *ap)
 	{
 		if ((*arg == 'i' || *arg == 'd' || *arg == 'c'
 			|| *arg == 'D' || *arg == 'C') && (*format = arg + 1))
-			len = signed_print(ap, arg_flags, *arg);
+			return (print_wid(arg_flags, signed_print(ap, arg_flags, *arg)));
 		else if ((*arg == 'u' || *arg == 'o' || *arg == 'x' || *arg == 'X' ||
 			*arg == 'O' || *arg == 'U') && (*format = arg + 1))
-			len = unsigned_print(ap, arg_flags, *arg);
+			return (print_wid(arg_flags, unsigned_print(ap, arg_flags, *arg)));
 		else if (*arg == 's' && arg_flags.e_length != l && (*format = arg + 1))
-			len = str_print(ap, arg_flags);
+			return (print_wid(arg_flags, str_print(ap, arg_flags)));
 		else if ((*arg == 'S' || *arg == 's') && (*format = arg + 1))
-			len = wstr_print(ap, arg_flags);
+			return (print_wid(arg_flags, wstr_print(ap, arg_flags)));
 		else if (*arg == 'p' && (*format = arg + 1))
-			len = ptr_print(ap, arg_flags);
+			return (print_wid(arg_flags, ptr_print(ap, arg_flags)));
 		else if (*arg == '%' && (*format = arg + 1))
-			len = print_perc(arg_flags);
-		else if ((*arg || !(*format = arg)) && (*format = arg + 1))
-			len = char_print(*arg, arg_flags);
+			return (print_wid(arg_flags, print_perc(arg_flags)));
+		*format = *arg ? arg + 1 : arg;
+		len = *arg ? char_print(*arg, arg_flags) : len;
 	}
-	return (print_width(arg_flags, len));
+	return (print_wid(arg_flags, len));
 }
 
 static size_t		formatter(va_list *ap, char *format)
