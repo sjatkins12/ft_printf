@@ -64,7 +64,7 @@ size_t						signed_print(va_list *ap,
 	if (type == 'D')
 		arg_flag.e_length = l;
 	num = signed_len(ap, arg_flag);
-	if (type == 'c' && arg_flag.e_length != l)
+	if (type == 'c' || type == 'C')
 		len = char_print(num, arg_flag);
 	else if (type == 'C' || type == 'c')
 		len = uchar_print(num, arg_flag);
